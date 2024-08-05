@@ -6,7 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- Formulário para registro de novas peças -->
-     <!-- Lista das peças disponíveis -->
+    <!-- Listagem dos chamados do Balcão -->
+    <!-- Dar baixa nos materiais usado pelo Tecnico Mautençao -->
+    <!-- Form Solicitar material para o almoxarifado -->
 </body>
 </html>
