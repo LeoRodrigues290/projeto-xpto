@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_id'])) {
         <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="pages/balcao.php">Balcão</a></li>
             <li class="nav-item"><a class="nav-link" href="pages/tecnico-externo.php">Tecnico Externo</a></li>
-            <li class="nav-item"><a class="nav-link" href="pages/tecnicos.php">Técnico Manutenção</a></li>
+            <li class="nav-item"><a class="nav-link" href="pages/tecnico-manutencao.php">Técnico Manutenção</a></li>
 
             <li class="nav-item"><a class="nav-link" href="pages/almoxarifado.php">Almoxarifado</a></li>
         </ul>

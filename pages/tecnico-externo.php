@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="balcao.php">Balcão</a></li>
             <li class="nav-item"><a class="nav-link" href="tecnico-externo.php">Tecnico Externo</a></li>
-            <li class="nav-item"><a class="nav-link" href="tecnicos.php">Técnico Manutenção</a></li>
+            <li class="nav-item"><a class="nav-link" href="tecnico-manutencao.php">Técnico Manutenção</a></li>
 
             <li class="nav-item"><a class="nav-link" href="almoxarifado.php">Almoxarifado</a></li>
         </ul>
