@@ -22,13 +22,9 @@ Este é um sistema de gestão integrado desenvolvido em HTML, CSS, JavaScript e 
 - **Componentes:** Lista de produtos, Formulários de checklist, avaliação de garantia e orçamento
 - **Ações:** Registro de produtos, Atualização de checklists, Avaliação de garantias, Criação de orçamentos
 
-### Tela dos Técnicos (Externo e Laboratório)
+### Tela dos Técnicos (Externo e Manutenção)
 - **Componentes:** Lista de chamados, Formulários de criação de orçamento e baixa de peças
 - **Ações:** Gerenciamento de chamados, Registro de peças, Criação de orçamentos, Solicitação de materiais ao almoxarifado
-
-### Tela do Analista Contábil Fiscal
-- **Componentes:** Lista de NF-e, Formulários de controle de orçamento, folha de pagamento, pagamentos e contratos
-- **Ações:** Emissão de NF-e, Controle de orçamento, Registro de folha de pagamento, Registro de pagamentos, Criação de contratos
 
 ### Tela do Almoxarifado
 - **Componentes:** Lista de peças e equipamentos, Formulários de recebimento de peças, contagem de estoque, pedidos de reposição
