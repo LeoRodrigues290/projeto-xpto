@@ -18,9 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif (isset($_POST['registrar_uso_material'])) {
         // Verifica se o índice 'quantidade' está definido e é um array
         if (isset($_POST['quantidade']) && is_array($_POST['quantidade'])) {
-            // Itera sobre o array de quantidades e registra o uso de materiais
-            foreach ($_POST['quantidade'] as $materialId => $quantidade) {
-                registrarUsoMaterial($_POST['chamado_id'], $materialId, $quantidade);
+            try {
+                // Registra o uso de materiais no chamado
+                registrarUsoMaterial($_POST['chamado_id'], $_POST['quantidade']);
+                $mensagem = ['success' => 'Materiais registrados com sucesso.'];
+            } catch (InvalidArgumentException $e) {
+                $mensagem = ['error' => $e->getMessage()];
             }
         } else {
             $mensagem = ['error' => 'Nenhuma quantidade de material foi fornecida.'];

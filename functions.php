@@ -99,7 +99,8 @@ function registrarUsoMaterial($chamadoId, $materiaisQuantidades) {
     if (is_array($materiaisQuantidades)) {
         // Loop através de cada material e sua quantidade
         foreach ($materiaisQuantidades as $materialId => $quantidade) {
-            if ($quantidade > 0) {
+            // Garante que a quantidade seja um número positivo
+            if (is_numeric($quantidade) && $quantidade > 0) {
                 // Insere o material usado no chamado
                 $stmt = $conn->prepare("INSERT INTO materiais_usados (chamado_id, peca_equipamento, quantidade) VALUES (?, ?, ?)");
                 $stmt->bind_param("iii", $chamadoId, $materialId, $quantidade);
