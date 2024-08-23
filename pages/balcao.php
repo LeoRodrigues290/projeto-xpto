@@ -5,12 +5,24 @@ require '../functions.php'; // Inclui o arquivo de funções para manipulação 
 $chamadosPendentes = getChamadosByStatus('Pendente');
 $chamadosConcluidos = getChamadosByStatus('Concluído');
 
+$mensagem = null;
+
 // Verifica se o método da requisição é POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verifica se o formulário de registro de chamado foi enviado
     if (isset($_POST['registrar_chamado'])) {
-        // Registra um novo chamado com as informações fornecidas
-        registrarChamado($_POST['cliente'], $_POST['produto'], $_POST['descricao']);
+        // Verifica se todos os dados necessários estão presentes
+        if (!empty($_POST['cliente']) && !empty($_POST['produto']) && !empty($_POST['descricao'])) {
+            // Registra um novo chamado com as informações fornecidas
+            $resultado = registrarChamado($_POST['cliente'], $_POST['produto'], $_POST['descricao']);
+            if ($resultado) {
+                $mensagem = array('success' => 'Chamado registrado com sucesso.');
+            } else {
+                $mensagem = array('error' => 'Ocorreu um erro ao registrar o chamado.');
+            }
+        } else {
+            $mensagem = array('error' => 'Preencha todos os campos para registrar o chamado.');
+        }
     }
 }
 ?>
@@ -39,6 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="container mt-5">
     <h1>Balcão</h1>
+
+    <?php if (isset($mensagem['success'])): ?>
+        <div class="alert alert-success"><?php echo $mensagem['success']; ?></div>
+    <?php endif; ?>
+
+    <!-- Exibe mensagem de erro, se definida -->
+    <?php if (isset($mensagem['error'])): ?>
+        <div class="alert alert-danger"><?php echo $mensagem['error']; ?></div>
+    <?php endif; ?>
 
     <!-- Formulário para registrar um novo chamado -->
     <h2 class="mt-5">Registrar Novo Chamado</h2>

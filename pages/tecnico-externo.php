@@ -16,10 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mensagem = solicitarMaterialAlmoxarifado($_POST['nome_material'], $_POST['quantidade']);
     }
     elseif (isset($_POST['registrar_uso_material'])) {
-        registrarUsoMaterial($_POST['chamado_id'], $_POST['materiais'], $_POST['quantidade']);
+        // Verifica se o índice 'quantidade' está definido e é um array
+        if (isset($_POST['quantidade']) && is_array($_POST['quantidade'])) {
+            // Itera sobre o array de quantidades e registra o uso de materiais
+            foreach ($_POST['quantidade'] as $materialId => $quantidade) {
+                registrarUsoMaterial($_POST['chamado_id'], $materialId, $quantidade);
+            }
+        } else {
+            $mensagem = ['error' => 'Nenhuma quantidade de material foi fornecida.'];
+        }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">

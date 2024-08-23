@@ -95,19 +95,25 @@ function registrarUsoMaterial($chamadoId, $materiaisQuantidades) {
     $stmt->bind_param("i", $chamadoId);
     $stmt->execute();
 
-    // Loop através de cada material e sua quantidade
-    foreach ($materiaisQuantidades as $materialId => $quantidade) {
-        if ($quantidade > 0) {
-            // Insere o material usado no chamado
-            $stmt = $conn->prepare("INSERT INTO materiais_usados (chamado_id, peca_equipamento, quantidade) VALUES (?, ?, ?)");
-            $stmt->bind_param("iii", $chamadoId, $materialId, $quantidade);
-            $stmt->execute();
+    // Verifica se $materiaisQuantidades é um array
+    if (is_array($materiaisQuantidades)) {
+        // Loop através de cada material e sua quantidade
+        foreach ($materiaisQuantidades as $materialId => $quantidade) {
+            if ($quantidade > 0) {
+                // Insere o material usado no chamado
+                $stmt = $conn->prepare("INSERT INTO materiais_usados (chamado_id, peca_equipamento, quantidade) VALUES (?, ?, ?)");
+                $stmt->bind_param("iii", $chamadoId, $materialId, $quantidade);
+                $stmt->execute();
 
-            // Atualiza o estoque, subtraindo a quantidade usada
-            $stmt = $conn->prepare("UPDATE pecas_equipamentos SET quantidade = quantidade - ? WHERE id = ?");
-            $stmt->bind_param("ii", $quantidade, $materialId);
-            $stmt->execute();
+                // Atualiza o estoque, subtraindo a quantidade usada
+                $stmt = $conn->prepare("UPDATE pecas_equipamentos SET quantidade = quantidade - ? WHERE id = ?");
+                $stmt->bind_param("ii", $quantidade, $materialId);
+                $stmt->execute();
+            }
         }
+    } else {
+        // Se não for um array, você pode lançar uma exceção ou tratar o erro conforme necessário
+        throw new InvalidArgumentException('O parâmetro $materiaisQuantidades deve ser um array.');
     }
 }
 
