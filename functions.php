@@ -112,12 +112,17 @@ function registrarUsoMaterial($chamadoId, $materiaisQuantidades) {
 }
 
 // Função para solicitar material ao almoxarifado
-function solicitarMaterialAlmoxarifado($nomeMaterial, $quantidade, $tecnicoId) {
+function solicitarMaterialAlmoxarifado($nomeMaterial, $quantidade) {
     global $conn;
     // Prepara a query SQL para inserir um pedido de material no almoxarifado
-    $stmt = $conn->prepare("INSERT INTO materiais_solicitados (nome_material, quantidade, solicitado_por) VALUES (?, ?, ?)");
-    $stmt->bind_param("sii", $nomeMaterial, $quantidade, $tecnicoId);
-    $stmt->execute();
+    $stmt = $conn->prepare("INSERT INTO materiais_solicitados (nome_material, quantidade) VALUES (?, ?)");
+    $stmt->bind_param("si", $nomeMaterial, $quantidade);
+
+    if ($stmt->execute()) {
+        return array('success' => 'Material solicitado com sucesso!');
+    } else {
+        return array('error' => 'Erro ao solicitar material: ' . $conn->error);
+    }
 }
 
 // Função para listar pedidos pendentes
@@ -188,11 +193,12 @@ function getChamadoById($id) {
 // Função para obter os materiais usados em um chamado específico
 function getMateriaisUsadosByChamado($chamadoId) {
     global $conn;
-    // Prepara a query SQL para buscar os materiais usados em um chamado específico
-    $stmt = $conn->prepare("SELECT * FROM materiais_usados WHERE chamado_id = ?");
+    $stmt = $conn->prepare("SELECT mu.quantidade, pe.nome
+                            FROM materiais_usados mu
+                            INNER JOIN pecas_equipamentos pe ON mu.peca_equipamento_id = pe.id
+                            WHERE mu.chamado_id = ?");
     $stmt->bind_param("i", $chamadoId);
     $stmt->execute();
-    // Retorna todos os materiais usados como um array associativo
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 

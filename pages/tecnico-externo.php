@@ -8,16 +8,15 @@ $chamados = getChamadosByStatus('Pendente');
 $materiais = listarMateriais();
 
 // Verifica se o método da requisição é POST
+$mensagem = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verifica se o formulário de registro de uso de material foi enviado
-    if (isset($_POST['registrar_uso_material'])) {
-        // Registra o uso dos materiais selecionados para o chamado específico
-        registrarUsoMaterial($_POST['chamado_id'], $_POST['materiais'], $_POST['quantidade']);
-    }
     // Verifica se o formulário de solicitação de material ao almoxarifado foi enviado
-    elseif (isset($_POST['solicitar_material'])) {
+    if (isset($_POST['solicitar_material'])) {
         // Solicita um novo material ao almoxarifado
-        solicitarMaterialAlmoxarifado($_POST['nome_material'], $_POST['quantidade'], $_POST['tecnico_id']);
+        $mensagem = solicitarMaterialAlmoxarifado($_POST['nome_material'], $_POST['quantidade']);
+    }
+    elseif (isset($_POST['registrar_uso_material'])) {
+        registrarUsoMaterial($_POST['chamado_id'], $_POST['materiais'], $_POST['quantidade']);
     }
 }
 ?>
@@ -77,8 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="number" name="quantidade[<?php echo $material['id']; ?>]" class="form-control" min="0">
                             </div>
                         <?php endforeach; ?>
-
-                        <button type="submit" name="registrar_uso_material" class="btn btn-primary">Registrar Uso de Materiais</button>
+                        <button type="submit" name="registrar_uso_material" class="btn btn-primary">Enviar para Técnico</button>
                     </form>
                 </td>
             </tr>
@@ -88,17 +86,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <h2 class="mt-5">Solicitar Novo Material ao Almoxarifado</h2>
     <!-- Formulário para solicitar um novo material ao almoxarifado -->
+    <?php if (isset($mensagem['success'])): ?>
+        <div class="alert alert-success"><?php echo $mensagem['success']; ?></div>
+    <?php endif; ?>
+
+    <!-- Exibe mensagem de erro, se definida -->
+    <?php if (isset($mensagem['error'])): ?>
+        <div class="alert alert-danger"><?php echo $mensagem['error']; ?></div>
+    <?php endif; ?>
     <form method="post">
         <div class="form-group">
             <label for="nome_material">Nome do Material:</label>
-            <input type="text" name="nome_material" id="nome_material" class="form-control" required> <!-- Campo para o nome do material -->
+            <input type="text" name="nome_material" id="nome_material" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="quantidade">Quantidade:</label>
-            <input type="number" name="quantidade" id="quantidade" class="form-control" required> <!-- Campo para a quantidade solicitada -->
+            <input type="number" name="quantidade" id="quantidade" class="form-control" required>
         </div>
-        <input type="hidden" name="tecnico_id" value="<?php echo $_SESSION['usuario_id']; ?>"> <!-- ID do técnico logado -->
-        <button type="submit" name="solicitar_material" class="btn btn-secondary">Solicitar Material</button> <!-- Botão para enviar a solicitação -->
+        <button type="submit" name="solicitar_material" class="btn btn-secondary">Solicitar Material</button>
     </form>
 </div>
 </body>

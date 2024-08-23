@@ -2,7 +2,8 @@
 require '../functions.php';
 
 $pedidos = $conn->query("SELECT * FROM pedidos WHERE status = 'Pendente'");
-$materiais_solicitados = $conn->query("SELECT * FROM materiais_solicitados WHERE status = 'Pendente'");
+$materiais_solicitados = $conn->query("SELECT * FROM materiais_solicitados");
+$materiais_disponiveis = $conn->query("SELECT * FROM pecas_equipamentos");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['atualizar_estoque'])) {
@@ -48,34 +49,13 @@ $materiais = listarMateriais();
         <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="balcao.php">Balcão</a></li>
             <li class="nav-item"><a class="nav-link" href="tecnico-externo.php">Tecnico Externo</a></li>
-            <li class="nav-item"><a class="nav-link" href="tecnicos.php">Técnico Manutenção</a></li>
-
+            <li class="nav-item"><a class="nav-link" href="tecnico-manutencao.php">Técnico Manutenção</a></li>
             <li class="nav-item"><a class="nav-link" href="almoxarifado.php">Almoxarifado</a></li>
         </ul>
     </div>
 </nav>
 <div class="container mt-5">
     <h1>Almoxarifado</h1>
-
-    <h2 class="mt-5">Pedidos de Materiais</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Material</th>
-            <th>Quantidade Solicitada</th>
-            <th>Data do Pedido</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php while ($pedido = $pedidos->fetch_assoc()): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($pedido['peca_equipamento']); ?></td>
-                <td><?php echo htmlspecialchars($pedido['quantidade']); ?></td>
-                <td><?php echo htmlspecialchars($pedido['data']); ?></td>
-            </tr>
-        <?php endwhile; ?>
-        </tbody>
-    </table>
 
     <h2 class="mt-5">Materiais Solicitados por Técnicos</h2>
     <table class="table">
@@ -92,6 +72,24 @@ $materiais = listarMateriais();
                 <td><?php echo htmlspecialchars($solicitacao['nome_material']); ?></td>
                 <td><?php echo htmlspecialchars($solicitacao['quantidade']); ?></td>
                 <td><?php echo htmlspecialchars($solicitacao['data_solicitacao']); ?></td>
+            </tr>
+        <?php endwhile; ?>
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Materiais Disponíveis no Estoque</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nome do Material</th>
+            <th>Quantidade Disponível</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php while ($material = $materiais_disponiveis->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($material['nome']); ?></td>
+                <td><?php echo htmlspecialchars($material['quantidade']); ?></td>
             </tr>
         <?php endwhile; ?>
         </tbody>

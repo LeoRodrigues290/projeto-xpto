@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <th>Cliente</th>
             <th>Produto</th>
             <th>Descrição</th>
-            <th>Materiais Usados</th>
             <th>Ação</th>
         </tr>
         </thead>
@@ -57,16 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td><?php echo htmlspecialchars($chamado['cliente']); ?></td> <!-- Exibe o nome do cliente -->
                 <td><?php echo htmlspecialchars($chamado['produto']); ?></td> <!-- Exibe o nome do produto -->
                 <td><?php echo htmlspecialchars($chamado['descricao']); ?></td> <!-- Exibe a descrição do chamado -->
-                <td>
-                    <ul>
-                        <!-- Obtém e exibe a lista de materiais usados no chamado -->
-                        <?php
-                        $materiaisUsados = getMateriaisUsadosByChamado($chamado['id']);
-                        foreach ($materiaisUsados as $material): ?>
-                            <li><?php echo htmlspecialchars($material['peca_equipamento']) . ' - ' . htmlspecialchars($material['quantidade']); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </td>
                 <td>
                     <!-- Formulário para concluir o chamado -->
                     <form method="post">
